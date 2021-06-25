@@ -3,15 +3,26 @@
     <NavBar>
       <div class="home-nav" slot="center">购物街</div> 
     </NavBar>
+  <HomeSwiper :banners="banners" />
+  <HomeRecommendView :recommends="recommends" />
+  
   </div>
 </template>
 
 <script>
-import NavBar from '../../components/common/navbar/NavBar.vue'
 import {getHomeMultidata} from '../../network/home.js'
 
+import NavBar from '../../components/common/navbar/NavBar.vue'
+import HomeSwiper from './childcomps/HomeSwiper'
+import HomeRecommendView from './childcomps/HomeRecommendView'
+
+
 export default {
-  components: { NavBar },
+  components: { 
+    NavBar,
+    HomeSwiper,
+    HomeRecommendView
+  },
   name:"Home", 
   data() {
     return {
