@@ -5,7 +5,8 @@
     </NavBar>
   <HomeSwiper :banners="banners" />
   <HomeRecommendView :recommends="recommends" />
-  
+  <HomeFeature></HomeFeature>
+  div{$}*15
   </div>
 </template>
 
@@ -15,13 +16,15 @@ import {getHomeMultidata} from '../../network/home.js'
 import NavBar from '../../components/common/navbar/NavBar.vue'
 import HomeSwiper from './childcomps/HomeSwiper'
 import HomeRecommendView from './childcomps/HomeRecommendView'
+import HomeFeature from './childcomps/HomeFeature'
 
 
 export default {
   components: { 
     NavBar,
     HomeSwiper,
-    HomeRecommendView
+    HomeRecommendView,
+    HomeFeature
   },
   name:"Home", 
   data() {
@@ -39,11 +42,16 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   #home {
     background-color: pink;
   }
   .home-nav {
+    z-index: 9;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top:0;
     background-color: pink;
     color: #fff;
   }
