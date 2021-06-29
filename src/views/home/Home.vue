@@ -6,7 +6,12 @@
   <HomeSwiper :banners="banners" />
   <HomeRecommendView :recommends="recommends" />
   <HomeFeature></HomeFeature>
-  div{$}*15
+  <TabControl :titles="['流行', '新款', '精选']"></TabControl>
+<div>1</div>
+<div>2</div>
+<div>3</div>
+<div>4</div>
+<div>5</div>
   </div>
 </template>
 
@@ -17,6 +22,7 @@ import NavBar from '../../components/common/navbar/NavBar.vue'
 import HomeSwiper from './childcomps/HomeSwiper'
 import HomeRecommendView from './childcomps/HomeRecommendView'
 import HomeFeature from './childcomps/HomeFeature'
+import TabControl from '../../components/content/tabcontrol/TabControl'
 
 
 export default {
@@ -24,7 +30,8 @@ export default {
     NavBar,
     HomeSwiper,
     HomeRecommendView,
-    HomeFeature
+    HomeFeature,
+    TabControl
   },
   name:"Home", 
   data() {
