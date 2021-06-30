@@ -1,12 +1,12 @@
 <template>
   <div class="tab-control">
     <div class="tab-control-item" 
+    :class="{active: currentindex === index}"
     v-for="(item, index) in titles"
     @click="itemindex(index)"
-    :class="{active: currentindex === index}"
     >
       <span>{{item}}</span>
-      </div>
+    </div>
   </div>
 </template>
 
@@ -23,11 +23,13 @@ export default {
   },
   data() {
     return {
+      // 记录当前被选中的项
       currentindex:0
     }
   },
   methods:{
     itemindex(index) {
+      // 思路：点击的item的Index传给currentindex,用来与每个item比较，相同的话进行活跃样式渲染
       this.currentindex = index;
     }
   }
@@ -47,5 +49,10 @@ export default {
   }
  .active {
     color: var(--color-high-text);
+  }
+
+  .active span {
+    padding: 0 3px 3px;
+    border-bottom:4px solid var(--color-high-text) ;
   }
 </style>
