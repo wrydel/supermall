@@ -74,7 +74,7 @@
 
 <script>
 //分段书写相同类型的引入组件
- import {getHomeMultidata} from '../../network/home.js'                          
+ import {getHomeMultidata, getHomeGoods} from '../../network/home.js'                          
 
 import NavBar from '../../components/common/navbar/NavBar.vue'
 import TabControl from '../../components/content/tabcontrol/TabControl'
@@ -97,14 +97,42 @@ export default {
   data() {
     return {
       banners: [],
-      recommends: []
+      recommends: [],
+      goods: {
+        'pop': {page:0, list:[]},
+        'new': {page:0, list:[]},
+        'sell': {page:0, list:[]}
+      }
     }
   },
   created() {
-    getHomeMultidata().then(res => {
-      this.banners = res.data.banner.list;                // 箭头函数的this就是生命周期函数的this，生命周期函数里的this就是该组件
-      this.recommends = res.data.recommend.list;
-    })
+    // 将请求结果的处理操作抽到methods中
+    this.getHomeMultidata()             
+
+    this.getHomeGoods('pop')
+    this.getHomeGoods('new')
+    this.getHomeGoods('sell')
+  },
+
+  methods: {
+    getHomeMultidata() {
+      getHomeMultidata().then(res => {
+        this.banners = res.data.banner.list;                // 箭头函数的this就是生命周期函数的this，生命周期函数里的this就是该组件
+        this.recommends = res.data.recommend.list;
+      })
+    },
+    
+    getHomeGoods(type) {
+      // 请求下一页数据：当前页+1
+      const page = this.goods[type].page + 1;
+      getHomeGoods(type, page).then(res => {
+        // 将每一页数据放入数组中
+        this.goods[type].list.push(...res.data.list);
+
+        // 修改当前type数据的总页数
+        this.goods[type].page += 1;
+      })
+    }
   }
 }
 </script>
