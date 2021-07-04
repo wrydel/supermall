@@ -31,6 +31,7 @@ export default {
     itemindex(index) {
       // 思路：点击的item的Index传给currentindex,用来与每个item比较，相同的话进行活跃样式渲染
       this.currentindex = index;
+      this.$emit('tabclick',index);
     }
   }
 }

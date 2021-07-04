@@ -6,7 +6,10 @@
   <HomeSwiper :banners="banners" />
   <HomeRecommendView :recommends="recommends" />
   <HomeFeature></HomeFeature>
-  <TabControl class="tab-control" :titles="['流行', '新款', '精选']"></TabControl>
+  <TabControl class="tab-control"
+    @tabclick="home-tabclick"
+    :titles="['流行', '新款', '精选']"/>
+  <GoodList :goods="showgoods"></GoodList>
 <div>1</div>
 <div>2</div>
 <div>3</div>
@@ -78,6 +81,7 @@
 
 import NavBar from '../../components/common/navbar/NavBar.vue'
 import TabControl from '../../components/content/tabcontrol/TabControl'
+import GoodList from '../../components/content/goods/GoodList'
 
 import HomeSwiper from './childcomps/HomeSwiper'
 import HomeRecommendView from './childcomps/HomeRecommendView'
@@ -88,10 +92,11 @@ export default {
   components: { 
     NavBar,
     TabControl,
+    GoodList,
     HomeSwiper,
     HomeRecommendView,
-    HomeFeature
-
+    HomeFeature,
+    
   },
   name:"Home", 
   data() {
@@ -102,7 +107,13 @@ export default {
         'pop': {page:0, list:[]},
         'new': {page:0, list:[]},
         'sell': {page:0, list:[]}
-      }
+      },
+      currenttype: 'pop',
+    }
+  },
+  computed: {
+    showgoods() {
+      return this.goods[this.currentindex].list
     }
   },
   created() {
@@ -115,6 +126,26 @@ export default {
   },
 
   methods: {
+    // 
+    // 事件监听相关方法
+    // 
+    homeTabclick(index) {
+      switch(index) {
+        case 0:
+          this.currentindex = 'pop'
+          break
+        case 1:
+          this.currentindex = 'new'
+          break
+        case 2:
+          this.currentindex = 'sell'
+          break
+      }
+    },
+
+    //
+    //  网络请求的相关方法
+    // 
     getHomeMultidata() {
       getHomeMultidata().then(res => {
         this.banners = res.data.banner.list;                // 箭头函数的this就是生命周期函数的this，生命周期函数里的this就是该组件
