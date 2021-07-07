@@ -3,81 +3,84 @@
     <NavBar>
       <div class="home-nav" slot="center">购物街</div> 
     </NavBar>
-  <HomeSwiper :banners="banners" />
-  <HomeRecommendView :recommends="recommends" />
-  <HomeFeature></HomeFeature>
-  <TabControl class="tab-control"
-    @tabclick="home-tabclick"
-    :titles="['流行', '新款', '精选']"/>
-  <GoodList :goods="showgoods"></GoodList>
-<div>1</div>
-<div>2</div>
-<div>3</div>
-<div>4</div>
-<div>5</div><div>1</div>
-<div>2</div>
-<div>3</div>
-<div>4</div>
-<div>5</div><div>1</div>
-<div>2</div>
-<div>3</div>
-<div>4</div>
-<div>5</div><div>1</div>
-<div>2</div>
-<div>3</div>
-<div>4</div>
-<div>5</div><div>1</div>
-<div>2</div>
-<div>3</div>
-<div>4</div>
-<div>5</div>
-<div>1</div>
-<div>2</div>
-<div>3</div>
-<div>4</div>
-<div>5</div><div>1</div>
-<div>2</div>
-<div>3</div>
-<div>4</div>
-<div>5</div><div>1</div>
-<div>2</div>
-<div>3</div>
-<div>4</div>
-<div>5</div><div>1</div>
-<div>2</div>
-<div>3</div>
-<div>4</div>
-<div>5</div><div>1</div>
-<div>2</div>
-<div>3</div>
-<div>4</div>
-<div>5</div><div>1</div>
-<div>2</div>
-<div>3</div>
-<div>4</div>
-<div>5</div><div>1</div>
-<div>2</div>
-<div>3</div>
-<div>4</div>
-<div>5</div><div>1</div>
-<div>2</div>
-<div>3</div>
-<div>4</div>
-<div>5</div><div>1</div>
-<div>2</div>
-<div>3</div>
-<div>4</div>
-<div>5</div><div>1</div>
-<div>2</div>
-<div>3</div>
-<div>4</div>
-<div>5</div>
+    <Scroll class="content">
+      <HomeSwiper :banners="banners" />
+      <HomeRecommendView :recommends="recommends" />
+      <HomeFeature></HomeFeature>
+      <TabControl class="tab-control"
+        @tabclick="home-tabclick"
+        :titles="['流行', '新款', '精选']"/>
+      <GoodList :goods="showGoods"></GoodList>
+
+      <div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+      <div>5</div><div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+      <div>5</div><div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+      <div>5</div><div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+      <div>5</div><div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+      <div>5</div>
+      <div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+      <div>5</div><div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+      <div>5</div><div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+      <div>5</div><div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+      <div>5</div><div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+      <div>5</div><div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+      <div>5</div><div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+      <div>5</div><div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+      <div>5</div><div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+      <div>5</div><div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+      <div>5</div>
+    </Scroll>
   </div>
 </template>
 
 <script>
 //分段书写相同类型的引入组件
- import {getHomeMultidata, getHomeGoods} from '../../network/home.js'                          
+import {getHomeMultidata, getHomeGoods} from '../../network/home.js'                          
 
 import NavBar from '../../components/common/navbar/NavBar.vue'
 import TabControl from '../../components/content/tabcontrol/TabControl'
@@ -86,6 +89,8 @@ import GoodList from '../../components/content/goods/GoodList'
 import HomeSwiper from './childcomps/HomeSwiper'
 import HomeRecommendView from './childcomps/HomeRecommendView'
 import HomeFeature from './childcomps/HomeFeature'
+
+import Scroll from '../../components/common/scroll/Scroll'
 
 
 export default {
@@ -96,6 +101,7 @@ export default {
     HomeSwiper,
     HomeRecommendView,
     HomeFeature,
+    Scroll,
     
   },
   name:"Home", 
@@ -112,17 +118,17 @@ export default {
     }
   },
   computed: {
-    showgoods() {
-      return this.goods[this.currentindex].list
+    showGoods() {
+      return this.goods[this.currenttype].list
     }
   },
   created() {
     // 将请求结果的处理操作抽到methods中
     this.getHomeMultidata()             
 
-    this.getHomeGoods('pop')
-    this.getHomeGoods('new')
-    this.getHomeGoods('sell')
+    this.getHomeGoodss('pop')
+    this.getHomeGoodss('new')
+    this.getHomeGoodss('sell')
   },
 
   methods: {
@@ -153,7 +159,7 @@ export default {
       })
     },
     
-    getHomeGoods(type) {
+    getHomeGoodss(type) {
       // 请求下一页数据：当前页+1
       const page = this.goods[type].page + 1;
       getHomeGoods(type, page).then(res => {
@@ -170,6 +176,7 @@ export default {
 
 <style scoped>
   #home {
+    position: relative;
     background-color: pink;
   }
 
@@ -187,5 +194,11 @@ export default {
     /* tab-control固定效果，满足条件top44,为flex属性，否则为static属性 */
     position: sticky;
     top: 44px;
+  }
+
+  .content {
+    height: 500px;
+    /* position: absolute;
+    bottom: 49px; */
   }
 </style>
