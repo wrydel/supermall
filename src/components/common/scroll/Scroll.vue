@@ -16,6 +16,12 @@ export default {
       scroll:null
     }
   },
+  props: {
+    probeType: {
+      type:Number,
+      default:0
+    }
+  },
 
   methods: {
     scrollTop(x,y,time=500) {
@@ -25,7 +31,12 @@ export default {
 
   mounted() {
     this.scroll = new Bscroll(this.$refs.wrapper,{
+      probeType: this.probeType
       // pullUpLoad:true
+    })
+
+    this.scroll.on('scroll', position => {
+      this.$emit('scroll', position)
     })
   }
 }
