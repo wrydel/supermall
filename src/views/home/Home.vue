@@ -3,7 +3,8 @@
     <NavBar>
       <div class="home-nav" slot="center">购物街</div> 
     </NavBar>
-    <Scroll class="content">
+    <!-- better-scroll框架，此处class="content"，是给组件最外层wrapper加的 -->
+    <Scroll class="content" ref="scroll">
       <HomeSwiper :banners="banners" />
       <HomeRecommendView :recommends="recommends" />
       <HomeFeature></HomeFeature>
@@ -11,70 +12,13 @@
         @tabclick="home-tabclick"
         :titles="['流行', '新款', '精选']"/>
       <GoodList :goods="showGoods"></GoodList>
-
-      <div>1</div>
-      <div>2</div>
-      <div>3</div>
-      <div>4</div>
-      <div>5</div><div>1</div>
-      <div>2</div>
-      <div>3</div>
-      <div>4</div>
-      <div>5</div><div>1</div>
-      <div>2</div>
-      <div>3</div>
-      <div>4</div>
-      <div>5</div><div>1</div>
-      <div>2</div>
-      <div>3</div>
-      <div>4</div>
-      <div>5</div><div>1</div>
-      <div>2</div>
-      <div>3</div>
-      <div>4</div>
-      <div>5</div>
-      <div>1</div>
-      <div>2</div>
-      <div>3</div>
-      <div>4</div>
-      <div>5</div><div>1</div>
-      <div>2</div>
-      <div>3</div>
-      <div>4</div>
-      <div>5</div><div>1</div>
-      <div>2</div>
-      <div>3</div>
-      <div>4</div>
-      <div>5</div><div>1</div>
-      <div>2</div>
-      <div>3</div>
-      <div>4</div>
-      <div>5</div><div>1</div>
-      <div>2</div>
-      <div>3</div>
-      <div>4</div>
-      <div>5</div><div>1</div>
-      <div>2</div>
-      <div>3</div>
-      <div>4</div>
-      <div>5</div><div>1</div>
-      <div>2</div>
-      <div>3</div>
-      <div>4</div>
-      <div>5</div><div>1</div>
-      <div>2</div>
-      <div>3</div>
-      <div>4</div>
-      <div>5</div><div>1</div>
-      <div>2</div>
-      <div>3</div>
-      <div>4</div>
-      <div>5</div><div>1</div>
-      <div>2</div>
-      <div>3</div>
-      <div>4</div>
-      <div>5</div>
+      <div>11</div>
+      <div>11</div>
+      <div>11</div>
+      <div>11</div>
+      <div>11</div>
     </Scroll>
+    <BackTop @click.native="backTopClick"/>
   </div>
 </template>
 
@@ -85,6 +29,7 @@ import {getHomeMultidata, getHomeGoods} from '../../network/home.js'
 import NavBar from '../../components/common/navbar/NavBar.vue'
 import TabControl from '../../components/content/tabcontrol/TabControl'
 import GoodList from '../../components/content/goods/GoodList'
+import BackTop from '../../components/content/backtop/BackTop'
 
 import HomeSwiper from './childcomps/HomeSwiper'
 import HomeRecommendView from './childcomps/HomeRecommendView'
@@ -98,6 +43,7 @@ export default {
     NavBar,
     TabControl,
     GoodList,
+    BackTop,
     HomeSwiper,
     HomeRecommendView,
     HomeFeature,
@@ -148,7 +94,9 @@ export default {
           break
       }
     },
-
+    backTopClick() {
+      this.$refs.scroll.scrollTop(0,0)
+    },
     //
     //  网络请求的相关方法
     // 
@@ -176,8 +124,9 @@ export default {
 
 <style scoped>
   #home {
+    height: 100vh;
     position: relative;
-    background-color: pink;
+    /* background-color: pink; */
   }
 
   .home-nav {
@@ -197,8 +146,11 @@ export default {
   }
 
   .content {
-    height: 500px;
-    /* position: absolute;
-    bottom: 49px; */
+    /* 用定位确定wrapper容器的大小 */
+    position: absolute;
+    top: 44px;
+    left: 0;
+    right: 0;
+    bottom: 49px;
   }
 </style>
