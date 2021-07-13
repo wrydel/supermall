@@ -1,4 +1,9 @@
 <template>
+<!-- 组件功能 -->
+<!-- 1.根据传入的信息创建选项卡
+      2.改变点击项的样式
+      3.发送点击事件
+ -->
   <div class="tab-control">
     <div class="tab-control-item" 
     :class="{active: currentindex === index}"
@@ -31,7 +36,7 @@ export default {
     itemindex(index) {
       // 思路：点击的item的Index传给currentindex,用来与每个item比较，相同的话进行活跃样式渲染
       this.currentindex = index;
-      this.$emit('tabclick',index);
+      this.$emit('tabclick', index);
     }
   }
 }
