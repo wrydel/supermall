@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @click="itemClick">
     <!-- 将数据对象的数据分别进行展示 -->
     <img :src="goodsItem.show.img" alt="" @load="imageLoad">
     <div>
@@ -25,6 +25,10 @@ export default {
     // 每张图片加载完成发射事件，调用refresh方法
     imageLoad() {
       this.$bus.$emit('itemImageLoad')
+    },
+
+    itemClick() {
+      this.$router.push('/detail' + this.goodsItem.iid)
     }
   }
 }
