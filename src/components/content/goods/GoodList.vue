@@ -1,7 +1,7 @@
 <template>
   <div class="goods">
     <!-- 遍历List中的数据，每一个数据对象传入一个GoodListItem组件 -->
-    <GoodListItem v-for="item in goods" :goods-item="item" />
+    <GoodListItem v-for="item in goods" :goodsItem="item" />
   </div>
 </template>
 
