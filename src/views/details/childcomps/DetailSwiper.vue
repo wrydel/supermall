@@ -1,9 +1,12 @@
 <template>
-  <Swiper class="detail-swiper">
+<div class="detail-swiper" v-if="topImages.length">
+  <Swiper>
     <SwiperItem v-for="item in topImages"> 
       <img :src="item" alt="">
     </SwiperItem>
   </Swiper>
+</div>
+
 </template>
 
 <script>
@@ -14,7 +17,7 @@ export default {
   props: {
     topImages: {
       type:Array,
-      default(){
+      default() {
         return []
       }
     }
@@ -27,8 +30,8 @@ export default {
 </script>
 
 <style>
-  .detail-swiper {
-    height: 300px;
+.detail-swiper {
+    height: 300PX;
     overflow: hidden;
   }
 </style>
