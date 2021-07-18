@@ -19,3 +19,21 @@ export class Goods {
     this.services = services
   }
 }
+
+export class Shop {
+  constructor(shopInfo) {
+    this.logo = shopInfo.shopLogo
+    this.name = shopInfo.name
+    this.sells = shopInfo.cSells
+    this.goodsCount = shopInfo.cGoods
+    this.score = shopInfo.score
+  }
+}
+
+export class Param {
+  constructor(info, rule) {
+    this.image = info.images ? info.images[0] : '';
+    this.infos = info.set;
+    this.sizes = rule.tables;
+  }
+}

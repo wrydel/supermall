@@ -53,7 +53,7 @@ export default {
     // 3.监听scroll滚动到底部  
     this.scroll.on('pullingUp', () => {
       this.$emit('pullingUpLoad')
-  
+
     })
 
   }

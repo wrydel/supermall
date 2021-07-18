@@ -1,8 +1,13 @@
 <template>
-  <div>
-   <DetailNavbar/>          <!-- 如果代码复杂则需要抽离为模块    -->
-   <DetailSwiper :topImages="topImages" /> 
-   <DetailBaseInfo :goods="goods" />
+  <div id="detail">
+    <DetailNavbar/>          <!-- 如果代码复杂则需要抽离为模块    -->
+    <Scroll class="detail-content" ref="scroll">
+      <DetailSwiper :topImages="topImages" /> 
+      <DetailBaseInfo :goods="goods" />
+      <DetailShopInfo :shop="shop"/>
+      <DetailGoodsInfo :goodsInfo="goodsInfo" @imgLoad="imgLoad"/>
+      <DetailParamInfo :paramInfo="paramInfo" />
+    </Scroll>
   </div>
 </template>
 
@@ -10,8 +15,14 @@
 import DetailNavbar from './childcomps/DetailNavbar'
 import DetailSwiper from './childcomps/DetailSwiper'
 import DetailBaseInfo from './childcomps/DetailBaseInfo'
+import DetailShopInfo from './childcomps/DetailShopInfo'
+import DetailGoodsInfo from './childcomps/DetailGoodsInfo'
+import DetailParamInfo from './childcomps/DetailParamInfo'
 
-import {getDetail, Goods} from '../../network/detail'
+
+import Scroll from '../../components/common/scroll/Scroll'
+
+import {getDetail, Goods, Shop, Param} from '../../network/detail'
 
 export default {
   name:"Detail", 
@@ -20,12 +31,19 @@ export default {
       iid:null,
       topImages:[],
       goods:{},
+      shop: {},
+      goodsInfo: {},
+      paramInfo: {}
     }
   },
   components: {
     DetailNavbar,
     DetailSwiper,
     DetailBaseInfo,
+    DetailShopInfo,
+    DetailGoodsInfo,
+    DetailParamInfo,
+    Scroll
   },
   created() {
     // 1.保存传入的id
@@ -40,13 +58,35 @@ export default {
 
       // 2.2获取商品信息
       this.goods = new Goods(detailData.itemInfo, detailData.columns, detailData.shopInfo.services)
+
+      // 2.3 获取店铺信息
+      this.shop =new Shop(detailData.shopInfo)
+
+      // 2.4获取商品详情信息
+      this.goodsInfo = detailData.detailInfo
+      // 2.5
+      this.paramInfo = new Param(detailData.itemParams.info, detailData.itemParams.rule)
     }
 
     )
+  },
+  methods: {
+    imgLoad() {
+      this.$refs.scroll.refresh()
+    } 
   }
 }
 </script>
 
 <style>
- 
+  #detail {
+    position: relative;
+    z-index: 9;
+    background-color: #fff;
+    height: 100vh;
+  }
+  .detail-content {
+    height:calc(100% - 44px);
+    overflow: hidden;
+  }
 </style>
