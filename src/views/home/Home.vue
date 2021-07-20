@@ -45,6 +45,7 @@ import HomeFeature from './childcomps/HomeFeature'
 import Scroll from '../../components/common/scroll/Scroll'
 
 import {debounce} from '../../common/utils'
+import {imgDebounceMixin} from '../../common/mixin'
 
 
 export default {
@@ -74,6 +75,7 @@ export default {
       isTabFixed :false,
     }
   },
+  mixins:[imgDebounceMixin],
   computed: {
     showGoods() {
       return this.goods[this.currenttype].list
@@ -90,9 +92,10 @@ export default {
 
   // 解决scrollheight的刷新BUG，每张图片加载完成发射事件，调用refresh方法
   mounted() {
-    this.$bus.$on('itemImageLoad',() => {
-      debounce(this.$refs.scroll.refresh,500)
-    })
+  },
+
+  deactivated() {
+    this.$bus.$off('itemImageLoad',this.imgDebounce)
   },
 
   methods: {
@@ -103,7 +106,7 @@ export default {
       switch(index) {
         case 0:
           this.currenttype = 'pop'
-          break
+          break 
         case 1:
           this.currenttype = 'new'
           break

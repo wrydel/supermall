@@ -29,6 +29,8 @@ import GoodList from '../../components/content/goods/GoodList'
 
 import {getDetail,getRecommend, Goods, Shop, Param} from '../../network/detail'
 
+import {imgDebounceMixin} from '../../common/mixin'
+
 export default {
   name:"Detail", 
   data() {
@@ -54,6 +56,7 @@ export default {
     GoodList,
     Scroll
   },
+  mixins:[imgDebounceMixin],
   created() {
     // 1.保存传入的id
     this.iid = this.$route.params.iid;
@@ -89,6 +92,12 @@ export default {
     }
 
     )
+  },
+  mounted() {
+  },
+
+  destroyed() {
+    this.$bus.$off('itemImageLoad',this.imgDebounc)
   },
 
 
