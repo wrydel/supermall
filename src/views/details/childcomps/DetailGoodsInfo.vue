@@ -4,7 +4,7 @@
     <div v-for="(item,index) in goodsInfo.detailImage" :key="index">
       <div class="info-key">{{item.key}}</div>
       <div class="info-list">
-        <img v-for="imgItem in item.list" :src="imgItem" alt="" @load="imgLoad">
+        <img v-for="imgItem in item.list" :src="imgItem" alt="" @load="loadImg">
       </div>
     </div>
   </div>
@@ -30,9 +30,9 @@ export default {
   methods: {
     // 性能优化：图片全部加载完刷新一次scroll
     // 原理：用计数器比较图片的总数量
-    imgLoad() {
-      this.counter += 1;
-      if(this.counter == this.imagesLength) {
+    loadImg() {
+      
+      if(++this.counter == this.imagesLength) {
         this.$emit('imgLoad');
       }
     }
@@ -40,8 +40,7 @@ export default {
   watch: {
     // 监听goodsInfo的改变，接收到数据后算出图片总数
     goodsInfo() {
-      for(let i=0; i<this.goodsInfo.detailImage.length; i++)
-      this.imagesLength += this.goodsInfo.detailImage[i].list
+      this.imagesLength = this.goodsInfo.detailImage[0].list.length
     }
   }
 }

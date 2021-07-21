@@ -1,14 +1,14 @@
 <template>
   <div id="detail">
-    <DetailNavbar/>          <!-- 如果代码复杂则需要抽离为模块    -->
+    <DetailNavbar @titleClick="titleClick"/>          <!-- 如果代码复杂则需要抽离为模块    -->
     <Scroll class="detail-content" ref="scroll">
       <DetailSwiper :topImages="topImages" /> 
       <DetailBaseInfo :goods="goods" />
       <DetailShopInfo :shop="shop"/>
       <DetailGoodsInfo :goodsInfo="goodsInfo" @imgLoad="imgLoad"/>
-      <DetailParamInfo :paramInfo="paramInfo" />
-      <DetailCommentInfo :commentInfo="commentInfo" />
-      <GoodList :goods="recommends"/>
+      <DetailParamInfo :paramInfo="paramInfo"  ref="param"/>
+      <DetailCommentInfo :commentInfo="commentInfo" ref="comment" />
+      <GoodList :goods="recommends" ref="recommend"/>
     </Scroll>
   </div>
 </template>
@@ -30,6 +30,7 @@ import GoodList from '../../components/content/goods/GoodList'
 import {getDetail,getRecommend, Goods, Shop, Param} from '../../network/detail'
 
 import {imgDebounceMixin} from '../../common/mixin'
+import { debounce } from '../../common/utils'
 
 export default {
   name:"Detail", 
@@ -43,6 +44,9 @@ export default {
       paramInfo: {},
       commentInfo: {},
       recommends: [],
+      titleTopY:[],
+      getTitleTopY:null,
+
     }
   },
   components: {
@@ -88,10 +92,24 @@ export default {
       getRecommend().then(res => {
         console.log(res);
         this.recommends = res.data.list;
+      })
     })
-    }
-
-    )
+    // 不需要防抖，组件内一共发射一次事件
+    // this.getTitleTopY = debounce(() => {
+    //   this.titleTopY = []
+    //   this.titleTopY.push(0)
+    //   this.titleTopY.push(this.$refs.param.$el.offsetTop)
+    //   this.titleTopY.push(this.$refs.comment.$el.offsetTop)
+    //   this.titleTopY.push(this.$refs.recommend.$el.offsetTop)
+    //   }, 200)
+    //获取导航栏每个选项卡对应组件的offsetTop值
+      this.getTitleTopY = function() {
+      this.titleTopY = []
+      this.titleTopY.push(0)
+      this.titleTopY.push(this.$refs.param.$el.offsetTop)
+      this.titleTopY.push(this.$refs.comment.$el.offsetTop)
+      this.titleTopY.push(this.$refs.recommend.$el.offsetTop)
+      }
   },
   mounted() {
   },
@@ -102,9 +120,19 @@ export default {
 
 
   methods: {
+    // 详情图片GoodInfo加载完发出的事件
     imgLoad() {
-      this.$refs.scroll.refresh()
-    } 
+      //刷新scrollHeight
+      this.$refs.scroll.refresh();
+
+      //获取导航栏每个选项卡对应组件的offsetTop值
+      this.getTitleTopY();
+    },
+    
+    // 导航栏点击事件,根据获取的offsetTop的值跳转位置
+    titleClick(index) {
+      this.$refs.scroll.scroll.scrollTo(0, -this.titleTopY[index], 200)
+    }
   }
 }
 </script>

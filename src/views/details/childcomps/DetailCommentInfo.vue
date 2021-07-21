@@ -11,7 +11,7 @@
       </div>
     </div>
     <div class="commentInfo-content">
-      <div class="content">{{ commentInfo.content }}</div>
+      <div class="content-text">{{ commentInfo.content }}</div>
       <p class="content-info">
         {{ commentInfo.created | dateShow }} {{ commentInfo.style }}
       </p>
@@ -96,7 +96,7 @@ export default {
 .user-info span {
   margin-left: 8px;
 }
-.content {
+.content-text {
   line-height: 22px;
   color: #666;
 }

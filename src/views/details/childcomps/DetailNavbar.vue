@@ -33,6 +33,8 @@ export default {
     // 活跃样式渲染
     titleClick(index) {
       this.currentIndex = index;
+
+      this.$emit('titleClick',index)
     },
     // 后退按钮功能
     backClick() {
