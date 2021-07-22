@@ -10,6 +10,7 @@
       <DetailCommentInfo :commentInfo="commentInfo" ref="comment" />
       <GoodList :goods="recommends" ref="recommend"/>
     </Scroll>
+    <BackTop @click.native="backTopClick" v-show="isShowBackTop"/>
     <DeatilBottomBar/>
   </div>
 </template>
@@ -31,7 +32,7 @@ import GoodList from '../../components/content/goods/GoodList'
 
 import {getDetail,getRecommend, Goods, Shop, Param} from '../../network/detail'
 
-import {imgDebounceMixin} from '../../common/mixin'
+import {imgDebounceMixin, backTopMixin} from '../../common/mixin'
 import { debounce } from '../../common/utils'
 
 export default {
@@ -64,7 +65,7 @@ export default {
     GoodList,
     Scroll
   },
-  mixins:[imgDebounceMixin],
+  mixins:[imgDebounceMixin, backTopMixin],
   created() {
     // 1.保存传入的id
     this.iid = this.$route.params.iid;
@@ -159,6 +160,7 @@ export default {
         }*/
       }
 
+      this.listenerShowBackTop(position);
     }
   }
 }

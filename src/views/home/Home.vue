@@ -45,7 +45,7 @@ import HomeFeature from './childcomps/HomeFeature'
 import Scroll from '../../components/common/scroll/Scroll'
 
 import {debounce} from '../../common/utils'
-import {imgDebounceMixin} from '../../common/mixin'
+import {imgDebounceMixin,backTopMixin} from '../../common/mixin'
 
 
 export default {
@@ -53,7 +53,6 @@ export default {
     NavBar,
     TabControl,
     GoodList,
-    BackTop,
     HomeSwiper,
     HomeRecommendView,
     HomeFeature,
@@ -70,12 +69,11 @@ export default {
         'sell': {page:0, list:[]}
       },
       currenttype: 'pop',
-      isShowBackTop:false,
       tabOffsetTop:0,
       isTabFixed :false,
     }
   },
-  mixins:[imgDebounceMixin],
+  mixins:[imgDebounceMixin, backTopMixin],
   computed: {
     showGoods() {
       return this.goods[this.currenttype].list
@@ -117,14 +115,15 @@ export default {
       this.$refs.tabControl1.currentindex = index;            //保持两个tabcon样式相同
       this.$refs.tabControl2.currentindex = index;
     },
-    // 1.点击backtop按钮回到顶部
-    backTopClick() {
-      this.$refs.scroll.scrollTop(0,0)
-    },
+    // 1.点击backtop按钮回到顶部,由于混入在此删除
+    // backTopClick() {
+    //   this.$refs.scroll.scrollTop(0,0)
+    // },
 
     // 2.backtop在position-y大于1000时显示，反之隐藏
     contentScroll(position) {
-      this.isShowBackTop = -position.y > 1000
+    
+    this.listenerShowBackTop(position);
 
       this.isTabFixed = (-position.y) > this.tabOffsetTop       //两个tabControl重合时,让1号显示出来,制造吸顶效果,反之隐藏
     },
