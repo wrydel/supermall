@@ -1,7 +1,7 @@
 <template>
   <div id="detail">
-    <DetailNavbar @titleClick="titleClick"/>          <!-- 如果代码复杂则需要抽离为模块    -->
-    <Scroll class="detail-content" ref="scroll">
+    <DetailNavbar @titleClick="titleClick" ref="detailNavbar"/>          <!-- 如果代码复杂则需要抽离为模块    -->
+    <Scroll class="detail-content" ref="scroll" :probe-type="3" @scroll="detailScroll">
       <DetailSwiper :topImages="topImages" /> 
       <DetailBaseInfo :goods="goods" />
       <DetailShopInfo :shop="shop"/>
@@ -10,6 +10,7 @@
       <DetailCommentInfo :commentInfo="commentInfo" ref="comment" />
       <GoodList :goods="recommends" ref="recommend"/>
     </Scroll>
+    <DeatilBottomBar/>
   </div>
 </template>
 
@@ -21,6 +22,7 @@ import DetailShopInfo from './childcomps/DetailShopInfo'
 import DetailGoodsInfo from './childcomps/DetailGoodsInfo'
 import DetailParamInfo from './childcomps/DetailParamInfo'
 import DetailCommentInfo from './childcomps/DetailCommentInfo'
+import DeatilBottomBar from './childcomps/DeatilBottomBar'
 
 
 import Scroll from '../../components/common/scroll/Scroll'
@@ -46,6 +48,7 @@ export default {
       recommends: [],
       titleTopY:[],
       getTitleTopY:null,
+      currentIndex:0,
 
     }
   },
@@ -57,6 +60,7 @@ export default {
     DetailGoodsInfo,
     DetailParamInfo,
     DetailCommentInfo,
+    DeatilBottomBar,
     GoodList,
     Scroll
   },
@@ -106,9 +110,10 @@ export default {
       this.getTitleTopY = function() {
       this.titleTopY = []
       this.titleTopY.push(0)
-      this.titleTopY.push(this.$refs.param.$el.offsetTop)
-      this.titleTopY.push(this.$refs.comment.$el.offsetTop)
-      this.titleTopY.push(this.$refs.recommend.$el.offsetTop)
+      this.titleTopY.push(this.$refs.param.$el.offsetTop-44)
+      this.titleTopY.push(this.$refs.comment.$el.offsetTop-44)
+      this.titleTopY.push(this.$refs.recommend.$el.offsetTop-44)
+      this.titleTopY.push(Number.MAX_VALUE)
       }
   },
   mounted() {
@@ -131,7 +136,29 @@ export default {
     
     // 导航栏点击事件,根据获取的offsetTop的值跳转位置
     titleClick(index) {
-      this.$refs.scroll.scroll.scrollTo(0, -this.titleTopY[index], 200)
+      this.$refs.scroll.scroll.scrollTo(0, -this.titleTopY[index], 400)
+    },
+
+    // 根据页面滚动的位置，改变导航栏的样式
+    detailScroll(position) {
+      
+      for(let i=0; i<this.titleTopY.length-1 ;i++ ) {
+
+        if(i !== this.currentIndex && (-position.y > this.titleTopY[i] && -position.y <= this.titleTopY[i+1])) {
+          this.currentIndex = i;
+          this.$refs.detailNavbar.currentIndex = this.currentIndex;
+          console.log(position.y);
+        }
+        // 普通方法
+       /* if((this.currentIndex !== i) && (
+          (i < length - 1 &&　positionY >= this.themeTopYs[i] && positionY < this.themeTopYs[i+1])
+            || (i === length - 1 && positionY >= this.themeTopYs[i]))) {
+          this.currentIndex = i;
+          console.log(i);
+          // this.$refs.navbar.currentIndex = this.currentIndex
+        }*/
+      }
+
     }
   }
 }
@@ -145,7 +172,7 @@ export default {
     height: 100vh;
   }
   .detail-content {
-    height:calc(100% - 44px);
+    height:calc(100% - 44px - 49px);
     overflow: hidden;
   }
 </style>
