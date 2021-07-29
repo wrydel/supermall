@@ -11,7 +11,7 @@
       <GoodList :goods="recommends" ref="recommend"/>
     </Scroll>
     <BackTop @click.native="backTopClick" v-show="isShowBackTop"/>
-    <DeatilBottomBar/>
+    <DeatilBottomBar @addCart="addToCart"/>
   </div>
 </template>
 
@@ -111,9 +111,9 @@ export default {
       this.getTitleTopY = function() {
       this.titleTopY = []
       this.titleTopY.push(0)
-      this.titleTopY.push(this.$refs.param.$el.offsetTop-44)
-      this.titleTopY.push(this.$refs.comment.$el.offsetTop-44)
-      this.titleTopY.push(this.$refs.recommend.$el.offsetTop-44)
+      this.titleTopY.push(this.$refs.param.$el.offsetTop-42)
+      this.titleTopY.push(this.$refs.comment.$el.offsetTop-42)
+      this.titleTopY.push(this.$refs.recommend.$el.offsetTop-42)
       this.titleTopY.push(Number.MAX_VALUE)
       }
   },
@@ -145,10 +145,10 @@ export default {
       
       for(let i=0; i<this.titleTopY.length-1 ;i++ ) {
 
-        if(i !== this.currentIndex && (-position.y > this.titleTopY[i] && -position.y <= this.titleTopY[i+1])) {
+        if(i !== this.currentIndex && (-position.y >= this.titleTopY[i] && -position.y < this.titleTopY[i+1])) {
           this.currentIndex = i;
           this.$refs.detailNavbar.currentIndex = this.currentIndex;
-          console.log(position.y);
+          // console.log(position.y);
         }
         // 普通方法
        /* if((this.currentIndex !== i) && (
@@ -160,7 +160,20 @@ export default {
         }*/
       }
 
-      this.listenerShowBackTop(position);
+      this.listenerShowBackTop(position)
+    },
+
+    // 点击添加购物车
+    addToCart() {
+      const cartInfo = {};
+      cartInfo.image = this.topImages[0]
+      cartInfo.title = this.goods.title
+      cartInfo.desc = this.goods.desc
+      cartInfo.price = this.goods.realPrice
+      cartInfo.iid = this.iid
+      cartInfo.checked = false
+
+      this.$store.dispatch('addCart', cartInfo);
     }
   }
 }

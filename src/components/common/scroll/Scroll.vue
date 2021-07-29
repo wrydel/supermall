@@ -23,10 +23,10 @@ export default {
     },
     pullUpLoad: {
       type:Boolean,
-      default:false
+      default:true
     }
   },
-
+  
   methods: {
     scrollTop(x,y,time=500) {
       this.scroll.scrollTo(x, y, time)
