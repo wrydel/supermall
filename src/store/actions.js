@@ -32,14 +32,18 @@ export default {
     // }
     // 3.
     // 判断新加入的商品是否存在，否返回undefind
-    let oldProduct = context.state.cartList.find(item => item.iid === payLoad.iid)
+    return new Promise((resolve, reject) => {
+      let oldProduct = context.state.cartList.find(item => item.iid === payLoad.iid)
 
     if(oldProduct) {
       // 如果存在，count属性加1
       context.commit(ADD_COUNTER, oldProduct)
+      resolve('当前商品数量+1')
     } else {
       // 如果不存在，push进去
       context.commit(ADD_TO_CART, payLoad)
+      resolve('添加商品成功')
     }
+    })
   }
 }

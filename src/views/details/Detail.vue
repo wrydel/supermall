@@ -173,7 +173,9 @@ export default {
       cartInfo.iid = this.iid
       cartInfo.checked = false
 
-      this.$store.dispatch('addCart', cartInfo);
+      this.$store.dispatch('addCart', cartInfo).then(res => {
+        this.$toast.show(res)
+      })
     }
   }
 }

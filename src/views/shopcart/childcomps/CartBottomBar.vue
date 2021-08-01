@@ -9,7 +9,7 @@
     <div class="footing">
       合计: ￥{{totalPrice}}
     </div>
-    <div class="calculate">去计算({{checkedLength}})</div>
+    <div class="calculate" @click="calc">去计算({{checkedLength}})</div>
   </div>
 </template>
 
@@ -49,6 +49,12 @@ export default {
       }else {
          this.$store.state.cartList.forEach(item => item.checked = true);
       }
+    },
+    
+    // 点击结算按钮前，检测是否选择商品并toast提示
+    calc() {
+      if(!this.checkedLength) 
+      this.$toast.show('请先添加商品')
     }
   }
 
